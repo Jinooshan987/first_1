@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+  <title>Funny Real Puzzles 🎯</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(270deg, #f6d365, #fda085, #fbc2eb, #a1c4fd);
+      background-size: 800% 800%;
+      animation: gradient 12s ease infinite;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      text-align: center;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .box {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      border-radius: 20px;
+      margin: 20px;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255,255,255,0.3);
+    }
+
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button {
+      background: #ff4d4d;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="passwordBox" class="box">
+    <h2>🔐 Enter Super Secret Password</h2>
+    <input type="password" id="passwordInput" placeholder="Hint: 123">
+    <button onclick="checkPassword()">Let's Go!</button>
+    <p id="error" style="color: #f88;"></p>
+  </div>
+
+  <div id="instructionBox" class="box hidden">
+    <h2>🚨 Warning! Super Secret File Ahead! 🔐</h2>
+    <p>This file is <strong>highly confidential and secured</strong> with 10 tricky puzzles! 🤓</p>
+    <p>You must answer all puzzles correctly to reveal the truth behind this mysterious file! 🧩</p>
+    <p>So get ready, follow instructions, and let's see how smart you are! 😎</p>
+    <button onclick="startPuzzles()">Start Puzzles ▶️</button>
+  </div>
+
+  <div id="puzzleArea"></div>
+
+  <div id="finalMessage" class="box hidden" style="animation: popIn 1s ease-in-out;">
+  <style>
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .love-text {
+      font-size: 2rem;
+      color: #ffccff;
+      text-shadow: 2px 2px #ff66cc;
+      animation: glow 1.5s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #ff66cc; }
+      to { text-shadow: 0 0 20px #ff3399, 0 0 30px #ff3399; }
+    }
+  </style>
+  <h2 class="love-text">💖 I Love You 💖</h2>
+  <p style="font-size: 1.5rem; color: #ffe0f0;">💖💖💖💖💖I Miss U 💖💖💖💖💖</p>
+  <p style="font-size: 1.3rem; color: #ffcce6;">Thangome 💫</p>
+  <p style="font-size: 2rem; color: #ff99cc;">😘😘😘ummaaaaaaaa😘😘😘</p>
+</div>
+
+  <script>
+    const puzzles = [
+      { question: "What has hands but can't clap?", answer: "clock" },
+      { question: "What can you catch but not throw?", answer: "cold" },
+      { question: "What goes up but never comes down?", answer: "age" },
+      { question: "I’m tall when I’m young and short when I’m old. What am I?", answer: "candle" },
+      { question: "What begins with T, ends with T, and has T in it?", answer: "teapot" },
+      { question: "What has a neck but no head?", answer: "bottle" },
+      { question: "What gets wetter as it dries?", answer: "towel" },
+      { question: "The more you take, the more you leave behind. What are they?", answer: "footsteps" },
+      { question: "I have keys but no locks. I have a space but no room. You can enter but not go outside. What am I?", answer: "keyboard" },
+      { question: "What can travel around the world while staying in the same corner?", answer: "stamp" }
+    ];
+
+    let currentPuzzle = 0;
+
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      if (input === "123") {
+        document.getElementById("passwordBox").style.display = "none";
+        document.getElementById("instructionBox").classList.remove("hidden");
+      } else {
+        document.getElementById("error").innerText = "Wrong password! Try 123 😉";
+      }
+    }
+
+    function startPuzzles() {
+      document.getElementById("instructionBox").classList.add("hidden");
+      showNextPuzzle();
+    }
+
+    function showNextPuzzle() {
+      const area = document.getElementById("puzzleArea");
+      area.innerHTML = "";
+
+      if (currentPuzzle >= puzzles.length) {
+        document.getElementById("finalMessage").classList.remove("hidden");
+        return;
+      }
+
+      const box = document.createElement("div");
+      box.className = "box";
+
+      const title = document.createElement("h3");
+      title.innerText = `🧩 Puzzle ${currentPuzzle + 1}`;
+      box.appendChild(title);
+
+      const question = document.createElement("p");
+      question.innerText = puzzles[currentPuzzle].question;
+      box.appendChild(question);
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.id = "answerInput";
+      input.placeholder = "Type your answer...";
+      box.appendChild(input);
+
+      const button = document.createElement("button");
+      button.innerText = "Submit";
+      button.onclick = () => checkAnswer(input.value.toLowerCase());
+      box.appendChild(button);
+
+      const msg = document.createElement("p");
+      msg.id = "puzzleMsg";
+      msg.style.color = "#f88";
+      box.appendChild(msg);
+
+      area.appendChild(box);
+    }
+
+    function checkAnswer(answer) {
+      const correct = puzzles[currentPuzzle].answer;
+      const msg = document.getElementById("puzzleMsg");
+
+      if (answer === correct) {
+        currentPuzzle++;
+        showNextPuzzle();
+      } else {
+        msg.innerText = "Oops! Try again 😜";
+      }
+    }
+  </script>
+</body>
+</html>
